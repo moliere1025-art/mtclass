@@ -1,0 +1,24 @@
+---
+interface Props {
+  location?: string;
+  transparent?: boolean;
+  current?: "studio" | "course";
+}
+
+const { location = "专业交易教材", transparent = false, current = "course" } = Astro.props;
+---
+
+<header class:list={["site-header", { "site-header--transparent": transparent }]}>
+  <a class="site-brand" href="/" aria-label="MT Trading Studio 机构介绍">
+    <img src="/brand/mt-header-logo.png" width="936" height="460" alt="" />
+  </a>
+  <p class="site-header__location">{location}</p>
+  <nav class="site-header__nav" aria-label="主导航">
+    <a class:list={{ "is-current": current === "studio" }} href="/">机构介绍</a>
+    <a class:list={{ "is-current": current === "course" }} href="/course/">课程目录</a>
+    <a href="/casebook/">案例库</a>
+    <button class="icon-button" type="button" data-search-open aria-label="打开课程搜索">
+      <span aria-hidden="true">⌕</span>
+    </button>
+  </nav>
+</header>

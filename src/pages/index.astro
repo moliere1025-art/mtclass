@@ -1,0 +1,197 @@
+---
+import BaseLayout from "../components/BaseLayout.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import { course } from "../lib/course";
+
+const directions = [
+  ["01", "Wyckoff 专业课程培训", "从市场逻辑、结构节点、量价验证到执行与复盘，建立一套可以被检验的交易语言。"],
+  ["02", "市场结构与量价行为研究", "研究供需转换、价格与成交量的配合关系，以及结构在不同时间框架中的演化。"],
+  ["03", "交易员实战能力训练", "从背景判断走到执行计划，训练触发、失效、仓位和退出条件，而不是背诵信号。"],
+  ["04", "交易团队协同与复盘", "围绕机会评估、计划制定、执行记录和复盘反馈，建立团队共享的工作标准。"],
+  ["05", "风险控制与执行纪律", "把风险边界、仓位分配和执行偏差放进每一次判断，先保证长期生存，再谈收益。"]
+];
+
+const learningTrack = [
+  ["背景", "先确定市场处在什么位置，区分趋势、区间、转折和失效。"],
+  ["结构", "再看关键节点之间的前后条件，判断结构是否真的完成。"],
+  ["行为", "用价格推进、停顿、测试与成交量变化验证供需，而不是只看标签。"],
+  ["执行", "把判断翻译成触发条件、风险边界、仓位和退出计划。"],
+  ["复盘", "记录证据、决策和偏差，让下一次判断比上一次更清楚。"]
+];
+
+const audience = [
+  "希望系统学习 Wyckoff 方法并建立完整框架的交易者",
+  "已有交易经验，但缺乏结构化认知与稳定执行能力的市场参与者",
+  "希望从碎片化技术分析升级为专业化市场理解的进阶交易员",
+  "需要统一方法论、复盘机制与执行标准的交易小组或团队"
+];
+---
+
+<BaseLayout
+  title="机构介绍 · MT TRADING STUDIO"
+  description="MT TRADING STUDIO 专注于 Wyckoff 专业课程培训、市场结构研究、交易员能力培养与交易团队协同训练。"
+  pageClass="studio-page"
+>
+  <SiteHeader location="机构介绍 · MT TRADING STUDIO" current="studio" transparent />
+
+  <main id="main-content">
+    <section class="studio-hero" aria-labelledby="studio-title">
+      <img
+        class="studio-hero__image"
+        src="/brand/mt-summit-brand-hq.webp"
+        width="2048"
+        height="1566"
+        alt="雪山之巅的 MT TRADING STUDIO × WYCKOFF 品牌主视觉"
+        sizes="100vw"
+        loading="eager"
+        fetchpriority="high"
+        decoding="async"
+      />
+      <div class="studio-hero__veil" aria-hidden="true"></div>
+
+      <div class="studio-hero__folio" aria-hidden="true">
+        <span>MT TRADING STUDIO</span>
+        <span>WYCKOFF PROFESSIONAL COURSE</span>
+        <span>{course.meta.year}</span>
+      </div>
+
+      <div class="studio-hero__copy">
+        <h1 class="sr-only" id="studio-title">MT TRADING STUDIO × WYCKOFF 专业课程</h1>
+        <p class="studio-hero__descriptor">专业交易教育 · 市场结构研究 · 交易员能力训练</p>
+        <div class="studio-hero__actions">
+          <a class="studio-hero__enter" href="/course/"><span>进入课程</span><span aria-hidden="true">↗</span></a>
+          <a class="studio-hero__about" href="#institution"><span>机构介绍</span><span aria-hidden="true">↓</span></a>
+        </div>
+      </div>
+
+      <a class="studio-hero__scroll" href="#institution" aria-label="向下查看机构介绍">
+        <span>SCROLL</span><i aria-hidden="true"></i>
+      </a>
+    </section>
+
+    <section class="studio-position" id="institution" aria-labelledby="position-title">
+      <header>
+        <p class="eyebrow">01 · 机构定位</p>
+        <h2 id="position-title">研究市场如何运行，<br /><strong>训练交易者如何行动。</strong></h2>
+      </header>
+      <div class="studio-position__copy">
+        <p>MT TRADING STUDIO 是一家专注于专业交易教育、市场结构研究、交易员能力培养与交易团队协同训练的研究型交易机构。机构以 Wyckoff 方法体系为核心理论基础，围绕市场结构、量价关系、主力行为、供需转换、风险控制与执行纪律，构建系统化、专业化、可落地的交易训练框架。</p>
+        <p>我们的核心工作，不是向市场输出碎片化策略结论，也不是停留在表层技术形态教学，而是帮助交易者建立对市场底层运行逻辑的理解能力。真正成熟的交易能力，必须建立在对价格行为、成交量变化、市场背景、关键测试、结构转换与资金行为的系统认知之上。</p>
+      </div>
+      <aside class="studio-position__statement">
+        <span>工作原则</span>
+        <strong>先理解证据，再承担风险。</strong>
+        <p>每一次判断都要能够说清楚：背景是什么，行为发生在哪里，什么条件会确认，什么情况意味着失效。</p>
+      </aside>
+    </section>
+
+    <section class="studio-principles" aria-labelledby="principles-title">
+      <div class="studio-principles__heading">
+        <p class="eyebrow">02 · 核心理念</p>
+        <h2 id="principles-title">市场不是随机图形的堆叠，<br /><strong>而是行为与结构的连续演化。</strong></h2>
+      </div>
+      <div class="studio-principles__lead">
+        <p>价格的每一次推进、停顿、测试、突破与失败，背后都对应着供需关系的变化、市场参与者的行为分层，以及更高时间级别上的结构背景。</p>
+        <p>我们不把 Wyckoff 简化为一套形态识别系统，而是把它当作一套关于市场运作机制的逻辑框架。它的价值，不在几个字母标签本身，而在于帮助交易者回答关键问题。</p>
+      </div>
+      <div class="studio-principles__questions">
+        <article><span>问题 01</span><h3>结构阶段</h3><p>市场正在积累、分配、趋势推进，还是处于结构转换的中间状态？</p></article>
+        <article><span>问题 02</span><h3>供需背景</h3><p>当前的价格动作，是有真实参与者推动，还是只是在流动性稀薄处短暂扩张？</p></article>
+        <article><span>问题 03</span><h3>确认与失效</h3><p>突破、测试和跟随动作满足哪些前后条件，什么证据出现时原来的判断必须停止？</p></article>
+      </div>
+    </section>
+
+    <section class="studio-directions" aria-labelledby="directions-title">
+      <header class="studio-section-heading">
+        <div>
+          <p class="eyebrow">03 · 专业方向</p>
+          <h2 id="directions-title">五个方向，<br /><strong>一套完整的训练系统。</strong></h2>
+        </div>
+        <p>研究、教学、执行和团队协同不是彼此孤立的模块。它们共同构成交易者从观察到行动、再回到复盘的工作闭环。</p>
+      </header>
+      <ol class="studio-directions__list">
+        {directions.map(([number, title, text]) => (
+          <li>
+            <span>{number}</span>
+            <h3>{title}</h3>
+            <p>{text}</p>
+            <b aria-hidden="true">↗</b>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <section class="studio-course" aria-labelledby="course-system-title">
+      <div class="studio-course__intro">
+        <p class="eyebrow">04 · Wyckoff 专业课程体系</p>
+        <h2 id="course-system-title">不是术语目录，<br /><strong>而是一条判断路径。</strong></h2>
+        <p>课程面向专业交易者，训练的是市场解读与决策能力。学员需要理解 Preliminary Support / Preliminary Supply、Selling Climax / Buying Climax、Automatic Rally / Automatic Reaction、Secondary Test、Spring / Shakeout、Upthrust、Sign of Strength / Sign of Weakness、Last Point of Support / Last Point of Supply 等节点在整体结构中的位置、前后条件、确认逻辑与失效机制。</p>
+        <a class="text-link" href="/course/"><span>进入 {course.chapters.length} 章课程</span><span aria-hidden="true">→</span></a>
+      </div>
+      <div class="studio-course__modules">
+        <article><span>训练重点 01</span><h3>量价关系与行为验证</h3><p>区分放量突破与缩量测试，理解高成交量但推进不足的含义，判断价格扩张与成交量扩张是否同步。</p></article>
+        <article><span>训练重点 02</span><h3>从背景到执行计划</h3><p>从高时间框架建立市场背景，再明确入场触发、失效点、风险边界、仓位分配以及加仓、减仓和退出条件。</p></article>
+        <article><span>训练重点 03</span><h3>复盘与能力迭代</h3><p>用统一的图表复盘流程检验结构判断，记录错误与执行偏差，逐步建立个人交易日志和案例数据库。</p></article>
+      </div>
+    </section>
+
+    <section class="studio-method" id="studio-method" aria-labelledby="method-title">
+      <header class="studio-section-heading">
+        <div>
+          <p class="eyebrow">05 · 工作方法</p>
+          <h2 id="method-title">从背景到复盘，<br /><strong>每一步都有证据。</strong></h2>
+        </div>
+        <p>教学以结构逻辑为中心，以图表阅读能力为核心，强调背景、行为、确认、执行、复盘的完整链路。</p>
+      </header>
+      <ol class="studio-method__track">
+        {learningTrack.map(([title, text], index) => (
+          <li>
+            <span>0{index + 1}</span>
+            <h3>{title}</h3>
+            <p>{text}</p>
+            {index < learningTrack.length - 1 && <i aria-hidden="true">→</i>}
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <section class="studio-team" aria-labelledby="team-title">
+      <div class="studio-team__copy">
+        <p class="eyebrow">06 · 交易团队体系</p>
+        <h2 id="team-title">团队不是分享观点，<br /><strong>而是共享一套工作标准。</strong></h2>
+        <p>机构内部围绕市场研究、机会评估、交易计划制定、执行纪律管理、复盘与反馈建立团队化协同机制。真正的交易团队，需要让每个人都能用同一套方法描述证据、表达风险、记录决策，并在复盘中改进。</p>
+      </div>
+      <dl class="studio-team__workflow">
+        <div><dt>研究</dt><dd>识别背景、位置和结构状态</dd></div>
+        <div><dt>评估</dt><dd>比较机会质量与风险收益边界</dd></div>
+        <div><dt>计划</dt><dd>明确触发、失效、仓位与退出</dd></div>
+        <div><dt>反馈</dt><dd>记录执行并把偏差带回研究</dd></div>
+      </dl>
+    </section>
+
+    <section class="studio-audience" aria-labelledby="audience-title">
+      <header>
+        <p class="eyebrow">07 · 服务对象</p>
+        <h2 id="audience-title">给已经在市场里的人，<br /><strong>一套更清楚的语言。</strong></h2>
+      </header>
+      <div class="studio-audience__list">
+        {audience.map((item, index) => <p><span>0{index + 1}</span>{item}</p>)}
+      </div>
+    </section>
+
+    <section class="studio-close" aria-labelledby="close-title">
+      <p class="eyebrow">MT TRADING STUDIO · 研究 / 教学 / 执行</p>
+      <h2 id="close-title">以结构理解市场，<br />以量价识别行为，<br /><strong>以纪律完成执行。</strong></h2>
+      <div class="studio-close__footer">
+        <p>我们帮助交易者建立市场理解力、独立判断力、执行纪律和长期生存能力。</p>
+        <a class="primary-button" href="/course/"><span>进入课程目录</span><span aria-hidden="true">↗</span></a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wordmark wordmark--footer"><span class="wordmark__mt">MT</span><span class="wordmark__wyckoff">WYCKOFF</span></div>
+    <p>MT TRADING STUDIO · Wyckoff 专业交易教育</p>
+    <a href="#main-content">返回顶部 ↑</a>
+  </footer>
+</BaseLayout>

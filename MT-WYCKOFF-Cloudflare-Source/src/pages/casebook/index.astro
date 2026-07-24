@@ -1,0 +1,35 @@
+---
+import BaseLayout from "../../components/BaseLayout.astro";
+import CaseCard from "../../components/CaseCard.astro";
+import SiteHeader from "../../components/SiteHeader.astro";
+import { casebook } from "../../lib/cases";
+---
+
+<BaseLayout title="职业交易台案例库 · MT WYCKOFF" description="六个逐步揭示的 Wyckoff 2.0 职业交易台案例" pageClass="casebook-page">
+  <SiteHeader location="案例库 · 六个交易台练习" />
+  <main id="main-content">
+    <section class="casebook-hero">
+      <div class="casebook-hero__index"><span>案例库</span><strong>{String(casebook.cases.length).padStart(2, "0")}</strong><small>交易台练习</small></div>
+      <div class="casebook-hero__copy">
+        <p class="eyebrow">{casebook.meta.subtitle}</p>
+        <h1>{casebook.meta.title}</h1>
+        <p>案例不是事后贴标签。每走到一个时间点，都只按当时看得到的内容重新判断：现在知道什么、还缺什么、最多能承担多少风险。</p>
+      </div>
+      <aside><p class="eyebrow">案例说明</p><p>{casebook.meta.method}</p><a class="text-link" href="/course/"><span>返回课程总览</span><span aria-hidden="true">←</span></a></aside>
+    </section>
+
+    <section class="casebook-method" aria-labelledby="casebook-method-title">
+      <div><p class="eyebrow">逐步揭示规则</p><h2 id="casebook-method-title">不能用未来信息，<br />替过去做决定。</h2></div>
+      <ol>
+        <li><span>01</span><strong>背景</strong><p>先判断市场处在趋势、区间还是过渡阶段。</p></li>
+        <li><span>02</span><strong>位置</strong><p>只在能够说清失效点的地方等待。</p></li>
+        <li><span>03</span><strong>触发</strong><p>微观数据必须带来价格结果。</p></li>
+        <li><span>04</span><strong>风险</strong><p>先想清楚什么时候撤退，再讨论目标。</p></li>
+      </ol>
+    </section>
+
+    <section class="casebook-grid" aria-label="六个交易台案例">
+      {casebook.cases.map((item) => <CaseCard item={item} />)}
+    </section>
+  </main>
+</BaseLayout>

@@ -1,0 +1,418 @@
+{
+  "meta": {
+    "title": "职业交易台案例库",
+    "subtitle": "背景 · 位置 · 触发 · 风险",
+    "method": "六个案例依据《Wyckoff 2.0》的案例章节重新整理，按时间点逐步揭示。价格路径是教学示意，不是原始行情，也不代表真实绩效。"
+  },
+  "cases": [
+    {
+      "number": 1,
+      "slug": "01-6e-range-to-trend",
+      "symbol": "6E",
+      "market": "CME 欧元期货",
+      "date": "2020-07-02—2020-07-06",
+      "context": "区间极端 → 趋势脱离价值区",
+      "title": "Spring、LVN 拒绝与价值迁移",
+      "thesis": "低位扫单只有在价格收回区间、突破低成交节点并在新的价值区站住后，才从候选 Spring 升级为需求证明。",
+      "dataContract": {
+        "status": "教学重画；结构顺序来自原案例，路径和数值已做归一化处理",
+        "session": "连续期货时段；教学中必须固定交易日边界",
+        "timeframes": "结构图 + 执行 Footprint",
+        "volume": "集中交易所合约量",
+        "profile": "日内 Fixed / Session Profile，参数必须随案例发布",
+        "orderFlow": "Bid × Ask 分类仅用于触发层验证"
+      },
+      "chart": {
+        "path": [72, 57, 42, 51, 44, 48, 35, 46, 61, 56, 69, 76, 71, 82, 88, 84, 93],
+        "levels": [
+          { "label": "区间上沿 / LVN", "value": 69, "tone": "neutral" },
+          { "label": "区间下沿", "value": 39, "tone": "risk" },
+          { "label": "迁移后价值", "value": 82, "tone": "accent" }
+        ],
+        "marks": [
+          { "index": 6, "label": "Potential Spring", "tone": "risk" },
+          { "index": 9, "label": "Test", "tone": "neutral" },
+          { "index": 12, "label": "C1", "tone": "accent" },
+          { "index": 15, "label": "C2", "tone": "accent" }
+        ]
+      },
+      "timeline": [
+        {
+          "id": "T0",
+          "title": "停止下降，但方向尚未确定",
+          "facts": ["SC—AR—ST 建立可观察区间", "上沿与低成交节点重合", "成交活动随区间发展总体下降"],
+          "decision": "只建立平衡假设；不能因为低位出现大成交就宣布 Accumulation。"
+        },
+        {
+          "id": "T1",
+          "title": "下沿扫单后快速收回",
+          "facts": ["价格跌破下沿后没有保存更低区域", "宽幅下跌没有得到连续结果", "局部 Delta 由负转正但形态并不完美"],
+          "decision": "Spring 仍是候选；等待价格离开低位并在回测时站住，不要追逐单根 Footprint。"
+        },
+        {
+          "id": "T2",
+          "title": "穿越 LVN 并建立新价值",
+          "facts": ["价格快速穿越原上沿", "旧区间中部不再被重新接受", "VPOC 随后向上迁移"],
+          "decision": "多头判断更有分量；后面只在迁移后的价值区或周 VWAP 附近寻找延续机会。"
+        }
+      ],
+      "plan": {
+        "context": "区间完成后进入上行发现阶段。",
+        "location": "旧上沿、迁移 VPOC、周 VWAP 的回测区域。",
+        "trigger": "回测成交收缩，并出现买方 Initiative 或价格主动离开。",
+        "invalidation": "价格重新接受旧区间中部。",
+        "management": "第一管理点为前方 HVN；没有左侧成交基准时，以已知流动性高点分批管理。"
+      },
+      "questions": [
+        "T1 时哪些证据支持 Spring，哪些证据仍然缺失？",
+        "为什么 VPOC 上移不能单独作为做多信号？",
+        "如果价格突破 LVN 后立即回到旧区间中部，标签和仓位应如何变化？"
+      ],
+      "answer": [
+        "位置、收回和努力/结果背离支持候选；离开低位、外部接受和回测时站住仍然缺失。",
+        "VPOC 只描述成交密度迁移，方向必须由价格表现和结构位置确认。",
+        "将突破降级为失败拍卖，撤销延续计划并重新回到区间假设。"
+      ]
+    },
+    {
+      "number": 2,
+      "slug": "02-6b-weekly-value-continuation",
+      "symbol": "6B",
+      "market": "CME 英镑期货",
+      "date": "2020-06-29—2020-07-03",
+      "context": "周度价值区内部 → 上方接受",
+      "title": "周 Profile、Creek 与回测触发",
+      "thesis": "先由小型累积结构取得向上结果，再等待 VAH、周 VWAP 与 Creek 的重合区域；Footprint 只负责缩短触发延迟。",
+      "dataContract": {
+        "status": "教学重画；结构顺序来自原案例，路径和数值已做归一化处理",
+        "session": "前一完整周 Profile + 当前周执行",
+        "timeframes": "周 Profile、结构图、执行 Footprint",
+        "volume": "集中交易所合约量",
+        "profile": "只使用已经完成的前周 Profile，避免发展中水平漂移",
+        "orderFlow": "Ask Initiative 需与价格位移共同出现"
+      },
+      "chart": {
+        "path": [48, 45, 39, 44, 37, 50, 57, 53, 63, 72, 78, 69, 66, 74, 82, 88],
+        "levels": [
+          { "label": "周 VPOC", "value": 46, "tone": "neutral" },
+          { "label": "VAH / Creek / 周 VWAP", "value": 66, "tone": "accent" },
+          { "label": "Naked VPOC", "value": 88, "tone": "neutral" }
+        ],
+        "marks": [
+          { "index": 4, "label": "Spring", "tone": "risk" },
+          { "index": 8, "label": "SOS", "tone": "accent" },
+          { "index": 12, "label": "BUEC", "tone": "neutral" }
+        ]
+      },
+      "timeline": [
+        {
+          "id": "T0",
+          "title": "价格位于周 VPOC 上方",
+          "facts": ["周 Profile 已完成", "价格仍在价值区内", "下方形成较小交易区间"],
+          "decision": "偏向可以略微偏多，但仍需下方结构产生向上结果。"
+        },
+        {
+          "id": "T1",
+          "title": "小型结构向上突破",
+          "facts": ["Spring 候选后出现 SOS", "价格穿越 VAH", "推动阶段参与度增加，回撤参与度降低"],
+          "decision": "解决方向问题：优先寻找买入；不在突破末端追单。"
+        },
+        {
+          "id": "T2",
+          "title": "回到重合交易区域",
+          "facts": ["VAH、Creek 与周 VWAP 重合", "价格未深度进入旧价值区", "Footprint 出现买方主动成交并获得位移"],
+          "decision": "允许使用 Buy Stop 触发；止损放在重新接受旧价值区的位置。"
+        }
+      ],
+      "plan": {
+        "context": "小型 Accumulation 已取得向上结果。",
+        "location": "VAH、Creek、周 VWAP 的重合区域。",
+        "trigger": "买方 Initiative 后突破执行柱高点。",
+        "invalidation": "重新接受周 VPOC 下方。",
+        "management": "第一目标为未测试的旧 VPOC；到达后依据新价值是否建立决定保留仓位。"
+      },
+      "questions": [
+        "为什么必须使用完成的周 Profile？",
+        "如果回测到达重合区域但 Footprint 正 Delta 无法推动价格，应该如何解释？",
+        "结构止损为什么不应机械放在单根 Footprint 最低点？"
+      ],
+      "answer": [
+        "发展中 Profile 的水平持续变化，会让位置判断产生前视式漂移。",
+        "这是买方努力未获结果的警告；等待新的价格结果或放弃交易。",
+        "单柱极值可能只是执行噪声，结构止损应对应交易假设真正失效的位置。"
+      ]
+    },
+    {
+      "number": 3,
+      "slug": "03-es-failed-continuation",
+      "symbol": "ES",
+      "market": "CME E-mini S&P 500",
+      "date": "2020-07-17",
+      "context": "价值区下方 → 重新进入并反转",
+      "title": "失败的空头延续与价值区重入",
+      "thesis": "价格在前日 VAL 下方启动时，空头延续只是初始假设；重新进入价值区并站住，必须迫使交易员撤销旧偏向。",
+      "dataContract": {
+        "status": "教学重画；结构顺序来自原案例，路径和数值已做归一化处理",
+        "session": "美股常规交易时段",
+        "timeframes": "15 分钟背景 + 5 分钟触发",
+        "volume": "集中交易所合约量",
+        "profile": "前一交易日 Session Profile",
+        "orderFlow": "仅在 BUEC 候选区域打开 Footprint"
+      },
+      "chart": {
+        "path": [58, 49, 38, 31, 36, 29, 42, 51, 46, 55, 63, 59, 70, 79, 86],
+        "levels": [
+          { "label": "前日 VAL", "value": 48, "tone": "accent" },
+          { "label": "VWAP 重合区", "value": 44, "tone": "neutral" },
+          { "label": "前日 VAH", "value": 82, "tone": "neutral" }
+        ],
+        "marks": [
+          { "index": 5, "label": "Spring", "tone": "risk" },
+          { "index": 7, "label": "Re-entry", "tone": "accent" },
+          { "index": 11, "label": "Test", "tone": "neutral" }
+        ]
+      },
+      "timeline": [
+        {
+          "id": "T0",
+          "title": "开盘位于前日 VAL 下方",
+          "facts": ["价格处于旧价值区外", "下方开始形成新平衡", "没有更高框架信息时，延续空头具有初始优先级"],
+          "decision": "准备在 VAL 回测失败时做空，但尚未触发。"
+        },
+        {
+          "id": "T1",
+          "title": "价格重新进入 Value Area",
+          "facts": ["下方扫单后快速收回", "价格穿回 VAL", "原空头延续没有站住"],
+          "decision": "撤销做空计划；将市场状态改写为失败延续/潜在反转。"
+        },
+        {
+          "id": "T2",
+          "title": "在价值区内完成测试",
+          "facts": ["回测在 VAL 与 VWAP 附近停止", "价格保持在价值区内", "执行图出现买方 Initiative 并获得宽幅位移"],
+          "decision": "允许做多，第一管理点为 VAH 与旧 VPOC 重合区域。"
+        }
+      ],
+      "plan": {
+        "context": "失败的价值区外延续，状态切换为价值区内反转。",
+        "location": "重新取得后的 VAL / VWAP 区域。",
+        "trigger": "5 分钟结构收回并出现具有结果的买方 Initiative。",
+        "invalidation": "再次接受 VAL 下方并形成新价值。",
+        "management": "先管理至 VAH；只有上方继续建立价值才保留趋势仓位。"
+      },
+      "questions": [
+        "T1 后继续坚持空头属于哪一种错误？",
+        "为什么重新进入价值区比单根正 Delta 更重要？",
+        "如果价格只短暂穿越 VAL 又立即回落，反转情景是否成立？"
+      ],
+      "answer": [
+        "属于未响应新证据的确认偏差和状态更新失败。",
+        "重新进入并站住改变了拍卖位置；Delta 只描述局部主动成交。",
+        "不成立。必须观察区内接受和回测时站住，单次穿越不足以改变状态。"
+      ]
+    },
+    {
+      "number": 4,
+      "slug": "04-6c-value-rotation",
+      "symbol": "6C",
+      "market": "CME 加元期货",
+      "date": "2020-07-22",
+      "context": "价值区内部旋转",
+      "title": "VAL 极端的条件性均值回归",
+      "thesis": "价值区内部的均值回归不是固定胜率规则；只有在 VAL 外部拍卖失败、重新进入并出现反向结果时，才获得向 VAH 旋转的条件。",
+      "dataContract": {
+        "status": "教学重画；结构顺序来自原案例，路径和数值已做归一化处理",
+        "session": "前日 Profile + 当前交易日",
+        "timeframes": "结构图 + 执行 Footprint",
+        "volume": "集中交易所合约量",
+        "profile": "前一交易日 Session Profile",
+        "orderFlow": "Ask Imbalance 必须伴随价格离开 VAL"
+      },
+      "chart": {
+        "path": [55, 51, 57, 49, 53, 47, 38, 28, 34, 45, 54, 62, 71, 78, 74],
+        "levels": [
+          { "label": "VAH", "value": 77, "tone": "neutral" },
+          { "label": "VPOC", "value": 53, "tone": "neutral" },
+          { "label": "VAL", "value": 33, "tone": "accent" }
+        ],
+        "marks": [
+          { "index": 7, "label": "Failed auction", "tone": "risk" },
+          { "index": 9, "label": "Re-entry", "tone": "accent" },
+          { "index": 13, "label": "VAH test", "tone": "neutral" }
+        ]
+      },
+      "timeline": [
+        {
+          "id": "T0",
+          "title": "市场围绕 VPOC 双向交换",
+          "facts": ["价格处于前日价值区内", "Value Area 没有明显迁移", "区间中部不存在高质量方向优势"],
+          "decision": "只在价值区极端准备条件性反转，不在中部追逐信号。"
+        },
+        {
+          "id": "T1",
+          "title": "测试 VAL 并短暂扫低",
+          "facts": ["价格来到预先定义的交易区域", "下破未形成外部接受", "位置与潜在 Spring 任务重合"],
+          "decision": "打开执行数据，但不能把低位本身当成买入信号。"
+        },
+        {
+          "id": "T2",
+          "title": "重新进入并向上取得结果",
+          "facts": ["Ask Initiative 出现", "价格离开 VAL 并穿越 VPOC", "市场保持在价值区内"],
+          "decision": "把 VAH 设为第一管理点，而不是声称存在固定的“80%概率”。"
+        }
+      ],
+      "plan": {
+        "context": "价值区内部平衡，采用极端反转策略族。",
+        "location": "VAL 外侧扫单与重新进入区域。",
+        "trigger": "重新进入价值区后出现买方 Initiative 和价格位移。",
+        "invalidation": "在 VAL 下方建立新价值。",
+        "management": "VPOC 是中间决策点，VAH 是主要管理点；到达并不保证继续突破。"
+      },
+      "questions": [
+        "为什么不能把所谓 80% 原则当作无条件胜率？",
+        "在区间中部出现相同 Footprint 触发是否可交易？",
+        "何种结果会把均值回归情景改写成向下延续？"
+      ],
+      "answer": [
+        "其样本、Profile 定义和市场环境都需要本地验证，且原理本身依赖重新接受条件。",
+        "通常不可交易，因为位置不足以提供清晰失效点和收益空间。",
+        "VAL 下方接受、价值迁移和回测失败会支持向下延续。"
+      ]
+    },
+    {
+      "number": 5,
+      "slug": "05-6b-distribution-acceptance",
+      "symbol": "6B",
+      "market": "CME 英镑期货",
+      "date": "2020-08-03",
+      "context": "下行趋势 → 旧价值区回测",
+      "title": "Distribution 结果、VAL 接受与卖方 Initiative",
+      "thesis": "旧 Distribution 取得向下结果后，当前市场在旧 VAL 附近形成新价值；回测失败与卖方 Initiative 共同完成延续触发。",
+      "dataContract": {
+        "status": "教学重画；结构顺序来自原案例，路径和数值已做归一化处理",
+        "session": "前日 Profile + 当前日内交易",
+        "timeframes": "结构图 + 执行 Footprint",
+        "volume": "集中交易所合约量",
+        "profile": "前一交易日 Session Profile",
+        "orderFlow": "负 Delta 必须获得向下位移和保存"
+      },
+      "chart": {
+        "path": [83, 76, 69, 61, 52, 48, 55, 50, 58, 62, 56, 45, 36, 29, 21],
+        "levels": [
+          { "label": "旧 VAL", "value": 60, "tone": "accent" },
+          { "label": "当前价值", "value": 51, "tone": "neutral" },
+          { "label": "旧 VPOC", "value": 25, "tone": "neutral" }
+        ],
+        "marks": [
+          { "index": 4, "label": "SOW", "tone": "risk" },
+          { "index": 9, "label": "LPSY", "tone": "neutral" },
+          { "index": 11, "label": "Initiative", "tone": "risk" }
+        ]
+      },
+      "timeline": [
+        {
+          "id": "T0",
+          "title": "旧结构已向下取得结果",
+          "facts": ["Distribution 候选完成向下突破", "价格在旧 VAL 下方形成新价值", "市场没有快速收回旧价值区"],
+          "decision": "优先寻找做空，不预测底部。"
+        },
+        {
+          "id": "T1",
+          "title": "回测旧 VAL",
+          "facts": ["位置与旧价值区下沿重合", "回测也可被解释为新小型区间的上方扫单", "上涨没有建立更高价值"],
+          "decision": "等待卖方结果；位置重合本身不是触发。"
+        },
+        {
+          "id": "T2",
+          "title": "买方努力失败，卖方取得位移",
+          "facts": ["高 Ask 成交没有推动上涨", "随后出现明显负 Delta", "宽幅下跌收在低位并站住"],
+          "decision": "允许做空；优先考虑 Initiative，而不是强求完美的吸收图形。"
+        }
+      ],
+      "plan": {
+        "context": "Distribution 取得结果后的下行延续。",
+        "location": "旧 VAL 与当前小型区间上沿。",
+        "trigger": "买方努力失败后出现获得结果的卖方 Initiative。",
+        "invalidation": "重新接受旧价值区并在其内部建立价值。",
+        "management": "第一目标为旧 VPOC；到达后重新评估是否形成新的双向平衡。"
+      },
+      "questions": [
+        "为什么高 Ask 成交反而可能支持空头判断？",
+        "如果出现很大负 Delta 但价格没有下跌，应如何处理？",
+        "当前日内结构能否推翻更高框架的 Distribution 结果？"
+      ],
+      "answer": [
+        "主动买入未能产生价格结果，说明买方努力可能被动承接。",
+        "将其视为卖方努力未获结果，停止追空并等待新的结构证据。",
+        "只有重新接受旧价值并在里面站住，才需要改写原来的判断；微观信号本身不能推翻高框架。"
+      ]
+    },
+    {
+      "number": 6,
+      "slug": "06-6e-failed-reversion",
+      "symbol": "6E",
+      "market": "CME 欧元期货",
+      "date": "2020-08-31",
+      "context": "反转情景失败 → 偏向切换",
+      "title": "Failed Reversion 与主动风险管理",
+      "thesis": "原计划做空并不赋予价格下跌义务；当价值区上沿的反转失败且价格重新获得外部接受时，首要任务是减少旧风险，再评估是否反向。",
+      "dataContract": {
+        "status": "教学重画；结构顺序来自原案例，路径和数值已做归一化处理",
+        "session": "前日 Profile + 当前交易日",
+        "timeframes": "结构图 + 执行 Footprint",
+        "volume": "集中交易所合约量",
+        "profile": "前一交易日 Session Profile + 周 VWAP",
+        "orderFlow": "转折图形必须服从周 VWAP 与外部接受"
+      },
+      "chart": {
+        "path": [48, 56, 65, 75, 70, 60, 54, 59, 68, 73, 81, 77, 86, 91, 88],
+        "levels": [
+          { "label": "前日 VAH", "value": 68, "tone": "accent" },
+          { "label": "周 VWAP", "value": 79, "tone": "neutral" },
+          { "label": "外部接受", "value": 84, "tone": "risk" }
+        ],
+        "marks": [
+          { "index": 4, "label": "Rejection", "tone": "neutral" },
+          { "index": 7, "label": "Failed reversion", "tone": "risk" },
+          { "index": 10, "label": "Acceptance", "tone": "accent" }
+        ]
+      },
+      "timeline": [
+        {
+          "id": "T0",
+          "title": "VAH 上方拒绝并回到价值区",
+          "facts": ["初始向上拍卖失败", "价格重新进入前日价值区", "反转原则支持短线做空候选"],
+          "decision": "允许建立做空计划，但止损与仓位必须考虑上方周 VWAP。"
+        },
+        {
+          "id": "T1",
+          "title": "价格再次靠近决策区域",
+          "facts": ["下跌没有扩展", "Footprint 出现反向买方 Initiative", "价格重新取得 VAH"],
+          "decision": "先退出或减少原空单，不必等待机械止损被击中。"
+        },
+        {
+          "id": "T2",
+          "title": "外部接受确认旧反转失败",
+          "facts": ["价格在 VAH 上方建立新价值", "旧空头情景失效", "周 VWAP 仍可能限制多头质量"],
+          "decision": "是否反向是第二个问题；如做多，应降低杠杆或等待更有利的回测。"
+        }
+      ],
+      "plan": {
+        "context": "价值区上沿反转失败，进入外部接受候选。",
+        "location": "重新取得的 VAH 与周 VWAP 之间。",
+        "trigger": "回测 VAH 并站住，或在上方形成新的价值区。",
+        "invalidation": "再次回到旧价值区中部。",
+        "management": "先消除错误方向风险；反向交易需要重新计算仓位，不能用情绪性翻仓替代新计划。"
+      },
+      "questions": [
+        "退出旧空单与建立新多单为什么是两个决策？",
+        "周 VWAP 位于触发上方时，仓位应如何调整？",
+        "主动退出而非等待止损是否违反纪律？"
+      ],
+      "answer": [
+        "旧情景失效只要求消除旧风险，新方向仍需独立满足位置、触发和收益风险条件。",
+        "降低风险预算、等待更深回测或直接放弃，避免在阻力前使用正常杠杆。",
+        "不违反。若退出规则预先定义为新证据触发，主动管理本身就是纪律的一部分。"
+      ]
+    }
+  ]
+}

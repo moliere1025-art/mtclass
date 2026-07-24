@@ -1,0 +1,49 @@
+---
+import type { TradingCase } from "../lib/cases";
+
+interface Props {
+  item: TradingCase;
+  compact?: boolean;
+}
+
+const { item, compact = false } = Astro.props;
+const width = 1000;
+const height = compact ? 300 : 430;
+const plotTop = 40;
+const plotBottom = height - 46;
+const plotLeft = 58;
+const plotRight = width - 58;
+const step = (plotRight - plotLeft) / (item.chart.path.length - 1);
+const y = (value: number) => plotBottom - (value / 100) * (plotBottom - plotTop);
+const points = item.chart.path.map((value, index) => `${plotLeft + index * step},${y(value)}`).join(" ");
+const markPosition = (index: number) => ({
+  x: plotLeft + index * step,
+  y: y(item.chart.path[index])
+});
+---
+
+<figure class:list={["case-chart", { "case-chart--compact": compact }]}>
+  <svg viewBox={`0 0 ${width} ${height}`} role="img" aria-labelledby={`case-chart-title-${item.number} case-chart-desc-${item.number}`}>
+    <title id={`case-chart-title-${item.number}`}>{item.symbol} · {item.title}</title>
+    <desc id={`case-chart-desc-${item.number}`}>按案例顺序画出的教学路径，展示结构顺序、交易水平和关键决定，不代表原始价格数据。</desc>
+    <rect x="0" y="0" width={width} height={height} class="case-chart__paper" />
+    {item.chart.levels.map((level) => (
+      <g class={`case-chart__level case-chart__level--${level.tone}`}>
+        <line x1={plotLeft} x2={plotRight} y1={y(level.value)} y2={y(level.value)} />
+        {!compact && <text x={plotRight - 4} y={y(level.value) - 8} text-anchor="end">{level.label}</text>}
+      </g>
+    ))}
+    <polyline class="case-chart__path" points={points} />
+    {item.chart.path.map((value, index) => <circle class="case-chart__node" cx={plotLeft + index * step} cy={y(value)} r={compact ? 3 : 4} />)}
+    {item.chart.marks.map((mark) => {
+      const position = markPosition(mark.index);
+      return (
+        <g class={`case-chart__mark case-chart__mark--${mark.tone}`}>
+          <circle cx={position.x} cy={position.y} r={compact ? 7 : 10} />
+          {!compact && <><line x1={position.x} x2={position.x} y1={position.y - 14} y2={position.y - 42} /><text x={position.x} y={position.y - 50} text-anchor="middle">{mark.label}</text></>}
+        </g>
+      );
+    })}
+  </svg>
+  {!compact && <figcaption><span class="eyebrow">教学案例图</span><p>这是按原案例顺序画出的示意，不是原始行情，也不代表真实绩效。图上的价格只用于说明本案例的判断过程。</p></figcaption>}
+</figure>

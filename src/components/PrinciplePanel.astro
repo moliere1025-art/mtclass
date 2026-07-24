@@ -1,0 +1,13 @@
+---
+import type { Principle } from "../lib/principles";
+
+interface Props { principle: Principle }
+const { principle } = Astro.props;
+---
+
+<aside class="principle-panel" aria-labelledby={`${principle.id}-title`}>
+  <header><span>原理解析</span><h3 id={`${principle.id}-title`}>{principle.title}</h3></header>
+  <div class="principle-panel__mechanism"><small>作用机制</small><p>{principle.mechanism}</p></div>
+  <div class="principle-panel__evidence"><small>你要观察什么</small><ul>{principle.evidence.map((item) => <li>{item}</li>)}</ul></div>
+  <div class="principle-panel__boundary"><p><small>反例</small>{principle.counterexample}</p><p><small>什么时候放弃</small>{principle.invalidation}</p></div>
+</aside>

@@ -1,0 +1,20 @@
+---
+import CaseChart from "./CaseChart.astro";
+import { padCase, type TradingCase } from "../lib/cases";
+
+interface Props { item: TradingCase }
+const { item } = Astro.props;
+---
+
+<article class="case-card">
+  <a href={`/casebook/${item.slug}/`}>
+    <header><span>案例 {padCase(item.number)}</span><strong>{item.symbol}</strong><small>{item.date}</small></header>
+    <CaseChart item={item} compact />
+    <div class="case-card__copy">
+      <p class="eyebrow">{item.context}</p>
+      <h2>{item.title}</h2>
+      <p>{item.thesis}</p>
+      <span>打开逐步案例 →</span>
+    </div>
+  </a>
+</article>

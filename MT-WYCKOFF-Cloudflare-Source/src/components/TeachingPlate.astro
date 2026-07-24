@@ -1,0 +1,91 @@
+---
+import type { TeachingMedia } from "../lib/media";
+
+interface Props { media: TeachingMedia }
+const { media } = Astro.props;
+---
+
+<figure class={`teaching-plate teaching-plate--${media.variant}`} aria-labelledby={`${media.id}-caption`}>
+  <div class="teaching-plate__canvas" role="img" aria-label={media.alt}>
+    {media.variant === "sampling-sot" && (
+      <div class="plate-sampling">
+        <div class="plate-sampling__paths">
+          <div><span>时间采样</span><i style="--path:68%"></i><i style="--path:46%"></i><i style="--path:58%"></i><i style="--path:31%"></i></div>
+          <div><span>成交量采样</span><i style="--path:52%"></i><i style="--path:64%"></i><i style="--path:38%"></i><i style="--path:55%"></i></div>
+          <div><span>Range 采样</span><i style="--path:44%"></i><i style="--path:57%"></i><i style="--path:49%"></i><i style="--path:62%"></i></div>
+        </div>
+        <div class="plate-sampling__thrusts">
+          <span>固定转折规则</span>
+          <ol><li><b>1.00</b><em>推进</em></li><li><b>0.71</b><em>推进</em></li><li><b>0.43</b><em>推进</em></li><li class="is-result"><b>接受</b><em>反向结果</em></li></ol>
+        </div>
+      </div>
+    )}
+
+    {media.variant === "liquidity-map" && (
+      <div class="plate-liquidity">
+        <div class="plate-liquidity__metric"><span>成交量</span><strong>完成的交换</strong><div class="dot-field">{Array.from({ length: 28 }).map(() => <i></i>)}</div></div>
+        <div class="plate-liquidity__metric"><span>盘口深度</span><strong>当前可见队列</strong><div class="depth-field">{[78,62,91,44,70,35].map((value) => <i style={`--depth:${value}%`}></i>)}</div></div>
+        <div class="plate-liquidity__metric plate-liquidity__metric--impact"><span>价格冲击</span><strong>订单穿越后的位移</strong><ol><li></li><li></li><li></li><li></li><li></li></ol></div>
+        <p>相同成交量，可以面对完全不同的深度、价差与冲击。</p>
+      </div>
+    )}
+
+    {media.variant === "profile-contract" && (
+      <div class="plate-profile">
+        <div class="plate-profile__bars" aria-hidden="true">
+          {[18,28,45,22,34,58,76,92,84,66,49,39,24,16].map((value, index) => <i class:list={{ "is-poc": index === 7, "is-lvn": index === 3 || index === 12 }} style={`--volume:${value}%`}></i>)}
+        </div>
+        <div class="plate-profile__contract">
+          <p><span>01</span><strong>样本</strong><em>Session / Fixed / Composite</em></p>
+          <p><span>02</span><strong>价格桶</strong><em>Tick size / aggregation</em></p>
+          <p><span>03</span><strong>价值区算法</strong><em>方法与覆盖比例</em></p>
+          <p><span>04</span><strong>参数记录</strong><em>改过的设置要留有记录</em></p>
+        </div>
+        <code>V(p) = Σ completed volume inside price bucket p</code>
+      </div>
+    )}
+
+    {media.variant === "value-scenarios" && (
+      <div class="plate-values">
+        {[
+          ["价值区内旋转","边界失败后回到内部","极端反转"],
+          ["价值区外接受","外部建立新价值","方向延续"],
+          ["失败后重新进入","外部无法保存","返回对侧"],
+          ["价值区迁移","中心持续同向移动","趋势健康"]
+        ].map(([title, evidence, implication], index) => (
+          <article class:list={{ "is-accent": index === 3 }}>
+            <span>0{index + 1}</span><h3>{title}</h3><div><i></i><b></b><i></i></div><p>{evidence}</p><strong>{implication}</strong>
+          </article>
+        ))}
+      </div>
+    )}
+
+    {media.variant === "footprint-grid" && (
+      <div class="plate-footprint">
+        <div class="plate-footprint__header"><span>BID</span><span>PRICE</span><span>ASK</span><span>DELTA</span></div>
+        {[
+          [42,"101.25",166,124],
+          [88,"101.00",214,126],
+          [192,"100.75",74,-118],
+          [238,"100.50",52,-186],
+          [154,"100.25",149,-5],
+          [61,"100.00",203,142]
+        ].map((row, index) => <div class:list={{ "is-imbalance": index === 0 || index === 3 }}><span>{row[0]}</span><strong>{row[1]}</strong><span>{row[2]}</span><em>{Number(row[3]) > 0 ? "+" : ""}{row[3]}</em></div>)}
+        <p>失衡阈值只是平台和研究设置；最后要看价格有没有走出结果，才能判断这个信号有没有用。</p>
+      </div>
+    )}
+
+    {media.variant === "decision-ladder" && (
+      <div class="plate-decision">
+        {[
+          ["01","背景","趋势、区间或过渡"],
+          ["02","位置","结构边界与成交分布"],
+          ["03","触发","价格结果与局部订单流"],
+          ["04","风险","订单、止损、仓位与管理"]
+        ].map(([number, label, text], index) => <div class:list={{ "is-active": index === 2 }}><span>{number}</span><strong>{label}</strong><p>{text}</p><i aria-hidden="true">→</i></div>)}
+        <p>低周期信号只能帮助找入场点，不能推翻高周期的结构判断。</p>
+      </div>
+    )}
+  </div>
+  <figcaption id={`${media.id}-caption`}><span class="eyebrow">原理图</span><p>{media.caption}</p><small>{media.source} · 第 {media.revision} 版</small></figcaption>
+</figure>

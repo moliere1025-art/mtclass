@@ -1,0 +1,61 @@
+---
+import { chapterSections, estimateReadingTime, getPhase, padChapter, type Chapter } from "../lib/course";
+
+interface Props { chapter: Chapter }
+
+const { chapter } = Astro.props;
+const phase = getPhase(chapter.phase)!;
+const sections = chapterSections(chapter);
+---
+
+<aside class="reader-navigator" id="reader-index" data-sidebar aria-label="本章导航" aria-hidden="true" inert>
+  <header class="reader-navigator__top">
+    <a class="reader-navigator__brand" href="/" aria-label="返回 MT Trading Studio 机构介绍">
+      <img src="/brand/mt-header-logo.png" width="936" height="460" alt="MT Trading Studio" />
+    </a>
+    <button class="reader-navigator__search" type="button" data-search-open aria-label="搜索全书">搜索</button>
+    <button class="icon-button reader-navigator__close" type="button" data-sidebar-close aria-label="关闭本章导航">×</button>
+  </header>
+
+  <div class="reader-navigator__context">
+    <a href={`/phase/${phase.slug}/`}>第 {phase.roman} 阶段 · {phase.title}</a>
+    <div>
+      <p class="reader-navigator__chapter">{padChapter(chapter.number)}</p>
+      <div>
+        <h2>{chapter.title}</h2>
+        <p>{String(sections.length).padStart(2, "0")} 个小节 · 约 {estimateReadingTime(chapter)} 分钟</p>
+      </div>
+    </div>
+  </div>
+
+  <nav class="reader-outline" aria-label="本章小节">
+    <header class="reader-outline__header">
+      <p>本章目录</p>
+      <p><strong data-sidebar-section>01</strong><span>/ {String(sections.length).padStart(2, "0")}</span></p>
+    </header>
+    <ol>
+      {sections.map((section, index) => (
+        <li>
+          <a href={`#${section.id}`} data-section-link={section.id}>
+            <span>{String(index + 1).padStart(2, "0")}</span>
+            <span>{section.title.replace(/^\d+\.\d+\s*/, "")}</span>
+          </a>
+        </li>
+      ))}
+    </ol>
+  </nav>
+
+  <footer class="reader-navigator__footer">
+    <nav aria-label="课程层级">
+      <a href="/course/"><span>课程总览</span><span aria-hidden="true">↗</span></a>
+      <a href={`/phase/${phase.slug}/`}><span>本阶段章节</span><span aria-hidden="true">↗</span></a>
+    </nav>
+    <div class="reader-navigator__tools" role="group" aria-label="阅读设置">
+      <span>字号</span>
+      <button type="button" data-font-size="down" aria-label="减小正文字号">A−</button>
+      <button type="button" data-font-size="reset" aria-label="恢复默认字号">A</button>
+      <button type="button" data-font-size="up" aria-label="增大正文字号">A+</button>
+    </div>
+  </footer>
+</aside>
+<button class="reader-navigator-scrim" type="button" data-sidebar-close data-sidebar-scrim aria-label="关闭本章导航" tabindex="-1"></button>

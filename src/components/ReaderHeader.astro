@@ -1,0 +1,23 @@
+---
+import { chapterSections, getPhase, padChapter, type Chapter } from "../lib/course";
+interface Props { chapter: Chapter }
+const { chapter } = Astro.props;
+const phase = getPhase(chapter.phase)!;
+const sections = chapterSections(chapter);
+---
+
+<header class="reader-topbar">
+  <button class="icon-button icon-button--menu reader-topbar__menu" type="button" data-sidebar-open aria-expanded="false" aria-controls="reader-index" aria-label="打开本章导航">
+    <span aria-hidden="true"></span><span aria-hidden="true"></span>
+  </button>
+  <a class="reader-topbar__mark" href="/" aria-label="返回 MT Trading Studio 机构介绍"><img src="/brand/mt-header-logo.png" width="936" height="460" alt="MT Trading Studio" /></a>
+  <nav class="reader-topbar__path" aria-label="当前位置">
+    <a href={`/phase/${phase.slug}/`}>第 {phase.roman} 阶段</a>
+    <span aria-hidden="true">/</span>
+    <strong><span>{padChapter(chapter.number)}</span> {chapter.title}</strong>
+  </nav>
+  <div class="reader-topbar__section" role="status" aria-label={`本章共 ${sections.length} 个小节`}>
+    <strong data-header-section>01</strong><span>/ {String(sections.length).padStart(2, "0")}</span>
+  </div>
+  <button class="icon-button reader-topbar__search" type="button" data-search-open aria-label="搜索全书">⌕</button>
+</header>

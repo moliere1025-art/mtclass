@@ -1,0 +1,27 @@
+---
+import BaseLayout from "../components/BaseLayout.astro";
+import { course } from "../lib/course";
+const versionLabel = `V${course.meta.version}`;
+---
+
+<BaseLayout title="登录 · MT WYCKOFF" pageClass="login-page">
+  <main id="main-content" class="login-shell">
+    <header class="login-header"><a class="wordmark wordmark--login" href="/login/"><span class="wordmark__mt">MT</span><span class="wordmark__wyckoff">WYCKOFF</span></a><p>专业交易教材 · {versionLabel}</p></header>
+
+    <section class="login-intro" aria-labelledby="course-promise">
+      <div class="login-intro__copy"><p class="eyebrow">机构交易学习手册 · {course.chapters.length} 章</p><h1 id="course-promise">把看到的市场变化，<br /><span>变成有依据的交易决定。</span></h1><p>围绕价格行为、结构、成交分布、执行和风险管理，建立一套能被讨论、测试和修正的 Wyckoff 交易语言。</p></div>
+      <figure><img src="/course-assets/figures/image2.webp" width="2298" height="1420" alt="SOS 与 LPS 价格成交量序列图" loading="eager" fetchpriority="high" decoding="async" /><figcaption><span>导入图 01</span><p>先看市场发生了什么，再解释它。</p></figcaption></figure>
+      <dl><div><dt>课程形式</dt><dd>数字教材</dd></div><div><dt>课程规模</dt><dd>{String(course.phases.length).padStart(2, "0")} 个阶段 · {course.chapters.length} 章</dd></div><div><dt>版本</dt><dd>专业版 / {course.meta.year}</dd></div></dl>
+    </section>
+
+    <section class="login-panel" aria-labelledby="login-title">
+      <div><p class="eyebrow">进入课程</p><h2 id="login-title">从事实到判断。</h2><p>按价格行为、市场结构、成交分布、执行与风险管理逐层阅读，先建立观察，再形成交易决定。</p></div>
+      <div class="login-panel__access">
+        <a class="primary-button" href="/course/"><span>进入课程界面</span><span aria-hidden="true">↗</span></a>
+        <p class="login-panel__notice">无需登录 · 直接进入课程</p>
+      </div>
+    </section>
+
+    <footer class="login-footer"><span>MT TRADING STUDIO</span><span>版本 {course.meta.version} · {course.meta.editionLabel}</span></footer>
+  </main>
+</BaseLayout>

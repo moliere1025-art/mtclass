@@ -1,0 +1,90 @@
+---
+import BaseLayout from "../../components/BaseLayout.astro";
+import CaseChart from "../../components/CaseChart.astro";
+import SiteHeader from "../../components/SiteHeader.astro";
+import { casebook, padCase, type TradingCase } from "../../lib/cases";
+
+export function getStaticPaths() {
+  return casebook.cases.map((item) => ({ params: { slug: item.slug }, props: { item } }));
+}
+
+interface Props { item: TradingCase }
+const { item } = Astro.props;
+const previous = casebook.cases[item.number - 2];
+const next = casebook.cases[item.number];
+const contractLabels: Record<string, string> = {
+  status: "案例状态",
+  session: "交易时段",
+  timeframes: "观察周期",
+  volume: "成交量",
+  profile: "Profile 设置",
+  orderFlow: "订单流"
+};
+const planLabels: Record<string, string> = {
+  context: "背景",
+  location: "位置",
+  trigger: "触发",
+  invalidation: "失效",
+  management: "管理"
+};
+---
+
+<BaseLayout title={`${item.symbol} · ${item.title} · MT WYCKOFF`} description={item.thesis} pageClass="case-page">
+  <SiteHeader location={`案例 ${padCase(item.number)} · ${item.symbol} · ${item.context}`} />
+  <main id="main-content">
+    <header class="case-hero">
+      <div class="case-hero__number"><span>案例</span><strong>{padCase(item.number)}</strong><small>/ {padCase(casebook.cases.length)}</small></div>
+      <div class="case-hero__copy">
+        <p class="eyebrow">{item.market} · {item.date}</p>
+        <h1>{item.title}</h1>
+        <p>{item.thesis}</p>
+      </div>
+      <aside><p class="eyebrow">背景</p><strong>{item.context}</strong><a href="/casebook/">全部案例 ↗</a></aside>
+    </header>
+
+    <section class="case-contract" aria-labelledby="case-contract-title">
+      <header><p class="eyebrow">数据说明</p><h2 id="case-contract-title">先把数据说清楚，<br />再解释价格行为。</h2></header>
+      <dl>{Object.entries(item.dataContract).map(([key, value]) => <div><dt>{contractLabels[key] || key}</dt><dd>{value}</dd></div>)}</dl>
+    </section>
+
+    <section class="case-map" aria-labelledby="case-map-title">
+      <header><p class="eyebrow">结构路径</p><h2 id="case-map-title">按案例顺序重画的教学路径</h2></header>
+      <CaseChart item={item} />
+    </section>
+
+    <section class="case-reveal" aria-labelledby="case-reveal-title">
+      <header><p class="eyebrow">按当时信息推进</p><h2 id="case-reveal-title">每一步只看当时知道的内容</h2></header>
+      <ol>
+        {item.timeline.map((step) => (
+          <li>
+            <span>{step.id}</span>
+            <div><h3>{step.title}</h3><ul>{step.facts.map((fact) => <li>{fact}</li>)}</ul></div>
+            <p><strong>当时的决定</strong>{step.decision}</p>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <section class="case-plan" aria-labelledby="case-plan-title">
+      <header><p class="eyebrow">交易计划</p><h2 id="case-plan-title">把判断变成具体条件</h2></header>
+      <dl>{Object.entries(item.plan).map(([key, value]) => <div><dt>{planLabels[key] || key}</dt><dd>{value}</dd></div>)}</dl>
+    </section>
+
+    <section class="case-assessment" aria-labelledby="case-assessment-title">
+      <header><p class="eyebrow">讲师点评</p><h2 id="case-assessment-title">问题与参考答案</h2><p>先写下你当时会怎么做，再看讲师的答案。</p></header>
+      <div>
+        {item.questions.map((question, index) => (
+          <details>
+            <summary><span>问题 {String(index + 1).padStart(2, "0")}</span><strong>{question}</strong></summary>
+            <p>{item.answer[index]}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <nav class="case-navigation" aria-label="案例导航">
+      {previous ? <a href={`/casebook/${previous.slug}/`}>← {previous.symbol} · {previous.title}</a> : <a href="/casebook/">← 案例库</a>}
+      {next ? <a href={`/casebook/${next.slug}/`}>{next.symbol} · {next.title} →</a> : <a href="/chapter/30/">进入最终案例答辩 →</a>}
+    </nav>
+  </main>
+</BaseLayout>

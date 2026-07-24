@@ -1,0 +1,120 @@
+---
+import BaseLayout from "../../components/BaseLayout.astro";
+import SiteHeader from "../../components/SiteHeader.astro";
+import { course, getPhaseChapters, padChapter } from "../../lib/course";
+
+const guide = {
+  overview: course.guide.overview,
+  learning: course.guide.learning,
+  market: course.guide.market,
+  order: course.guide.order,
+  structure: course.guide.structure
+};
+const versionLabel = `V${course.meta.version}`;
+const editionLine = `${versionLabel} · ${course.meta.year}`;
+---
+
+<BaseLayout title="课程总览 · MT WYCKOFF" description={`Wyckoff 专业交易方法${course.phases.length}阶段${course.chapters.length}章课程总览`} pageClass="course-page">
+  <SiteHeader location={`专业交易教材 · ${versionLabel}`} />
+  <main id="main-content">
+    <section class="course-cover">
+      <header class="course-cover__folio">
+        <span>MT TRADING STUDIO</span><span>专业交易教材</span><span>{editionLine}</span>
+      </header>
+
+      <div class="course-cover__index" role="group" aria-label="课程规模">
+        <p>课程规模</p><strong>{String(course.phases.length).padStart(2, "0")}</strong><span>个阶段</span><strong>{course.chapters.length}</strong><span>章</span>
+      </div>
+
+      <div class="course-cover__statement">
+        <p class="eyebrow">WYCKOFF 专业交易方法</p>
+        <h1><strong>证据</strong>先于解释。<br />结构先于<strong>行动。</strong></h1>
+        <p>从市场行为、结构判定到机构级执行与研究</p>
+      </div>
+
+      <aside class="course-cover__title">
+        <p class="eyebrow">专业学生版</p>
+        <h2><span>WYCKOFF</span>专业交易方法</h2>
+        <p>把观察、判断、确认和行动放在同一条线上，帮助你在不确定的行情里做出有依据的决定。</p>
+        <dl><div><dt>课程形式</dt><dd>数字教材</dd></div><div><dt>版本</dt><dd>第 {course.meta.version} 版</dd></div></dl>
+      </aside>
+
+      <figure class="course-cover__plate">
+        <img src="/course-assets/figures/image1.webp" width="1693" height="929" alt="供需与价格分布示意图" loading="eager" fetchpriority="high" decoding="async" />
+        <figcaption><span>教学图 01</span><p>价格 · 成交量 · 时间 · 结构</p></figcaption>
+      </figure>
+
+      <nav class="course-cover__tabs" aria-label={`${course.phases.length} 个学习阶段`}>
+        {course.phases.map((phase) => <a href={`/phase/${phase.slug}/`}><span>{String(phase.number).padStart(2, "0")}</span><small>{phase.english}</small></a>)}
+      </nav>
+
+      <div class="course-cover__start">
+        <p>{course.frontMatter[5]?.text}</p>
+        <a class="text-link" href={`/chapter/${course.chapters[0].slug}/`} data-continue-link><span data-continue-label>从第一章开始</span><span aria-hidden="true">→</span></a>
+      </div>
+    </section>
+
+    <section
+      class="progress-board"
+      aria-labelledby="progress-title"
+      data-course-dashboard
+      data-total-chapters={course.chapters.length}
+      data-phase-ranges={JSON.stringify(course.phases.map((phase) => [Math.min(...phase.chapters), Math.max(...phase.chapters)]))}
+    >
+      <div class="progress-board__heading">
+        <p class="eyebrow" id="progress-title">阅读进度</p>
+        <p data-last-position>尚未开始学习</p>
+      </div>
+      <div class="progress-board__segments" role="group" aria-label={`${course.chapters.length} 章阅读进度`} style={`--chapter-count:${course.chapters.length}`}>
+        {course.chapters.map((chapter) => <i data-progress-segment={chapter.number}><span class="sr-only">第 {chapter.number} 章</span></i>)}
+      </div>
+      <p><span data-completed-chapters>0</span> / {course.chapters.length} · <span data-total-progress>0%</span></p>
+      <div class="progress-board__phases" hidden>
+        {course.phases.map((phase) => <span data-phase-progress={phase.number}>0%</span>)}
+      </div>
+    </section>
+
+    <section class="course-guide" aria-labelledby="guide-title">
+      <div class="course-guide__title">
+        <p class="eyebrow">课程怎么安排</p>
+        <h2 id="guide-title">不是术语目录，<br />而是一条<strong>判断路径。</strong></h2>
+      </div>
+      <div class="course-guide__lead"><p>{guide.overview}</p><p>{guide.structure}</p></div>
+      <article><span>01</span><h3>学习主线</h3><p>{guide.learning}</p></article>
+      <article><span>02</span><h3>市场与案例</h3><p>{guide.market}</p></article>
+      <article><span>03</span><h3>章节顺序</h3><p>{guide.order}</p></article>
+    </section>
+
+    <section class="curriculum" aria-labelledby="curriculum-title">
+      <p class="curriculum__word" aria-hidden="true">课程内容</p>
+      <div class="curriculum__body">
+        <header class="curriculum__header">
+          <div><p class="eyebrow">7 个阶段 · 30 章</p><h2 id="curriculum-title">课程结构</h2></div>
+          <p>从价格行为和结构开始，逐步进入成交分布、订单流、交易执行和组合风险。</p>
+        </header>
+        <div class="curriculum__list">
+          {course.phases.map((phase) => (
+            <article class="curriculum-phase" data-phase-card={phase.number}>
+              <a class="curriculum-phase__header" href={`/phase/${phase.slug}/`}>
+                <span class="curriculum-phase__roman">{String(phase.number).padStart(2, "0")}</span>
+                <div><p class="eyebrow">{phase.english}</p><h3>{phase.title}</h3></div>
+                <p>{phase.statement}</p><span aria-hidden="true">↗</span>
+              </a>
+              <ol>
+                {getPhaseChapters(phase).map((chapter) => (
+                  <li data-chapter-card={chapter.number}><a href={`/chapter/${chapter.slug}/`}><span>{padChapter(chapter.number)}</span><strong>{chapter.title}</strong><small data-card-progress={chapter.number}>未开始</small></a></li>
+                ))}
+              </ol>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="casebook-entry" aria-labelledby="casebook-entry-title">
+      <div><p class="eyebrow">职业交易台案例</p><h2 id="casebook-entry-title">六个案例，<br />每一步都不能偷看未来。</h2></div>
+      <div><p>从 6E、6B、ES 与 6C 的区间、价值迁移、失败延续和订单流触发中，练习如何判断背景、位置、触发和风险。</p><a class="text-link" href="/casebook/"><span>进入职业交易台案例库</span><span aria-hidden="true">→</span></a></div>
+    </section>
+  </main>
+  <footer class="site-footer"><div class="wordmark wordmark--footer"><span class="wordmark__mt">MT</span><span class="wordmark__wyckoff">WYCKOFF</span></div><p>专业交易教材 · 第 {course.meta.version} 版 · {course.meta.editionLabel}</p><a href="#main-content">返回顶部 ↑</a></footer>
+</BaseLayout>
