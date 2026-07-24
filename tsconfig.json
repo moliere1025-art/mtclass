@@ -4,5 +4,10 @@
     "allowJs": true,
     "resolveJsonModule": true,
     "verbatimModuleSyntax": true
-  }
+  },
+  "exclude": [
+    "dist",
+    "node_modules",
+    "MT-WYCKOFF-Cloudflare-Source"
+  ]
 }
